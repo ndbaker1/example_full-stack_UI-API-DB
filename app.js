@@ -9,6 +9,8 @@ var connection = mysql.createConnection({
     password: 'password',
     database: 'express',
 })
+
+
 connection.connect(function (err) {
     if (err) throw err
     console.log('connected.')
