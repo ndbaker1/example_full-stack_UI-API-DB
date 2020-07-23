@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            div {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <input id='name' value='' size='11' placeholder="name">
+            <input id='var1' value='' size="11" placeholder='op1'>
+            <input id='var2' value='' size="11" placeholder='op2'>
+            <button id="requestButtonGET">Add Numbers</button>
+            <button id="requestButtonPOST">Get Name From Database</button>
+        </div>
+
+        <script>
+            document.getElementById("requestButtonGET").addEventListener('click', function () {
+                let xhr = new XMLHttpRequest(); // making request object
+                let name = document.getElementById('name').value,
+                    var1 = document.getElementById('var1').value,
+                    var2 = document.getElementById('var2').value;
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4 && xhr.status == 200)
+                        this.innerHTML = 'Add Numbers<br>' + JSON.parse(xhr.response).result;
+                }
+                xhr.open('GET', `http://localhost:3000/add?name=${name}&add1=${var1}&add2=${var2}`, true) // establishing a connection to api endpoint
+                xhr.send(null)
+            })
+
+            document.getElementById("requestButtonPOST").addEventListener('click', function () {
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = () => {
+                    console.log(xhr)
+                    if (xhr.readyState == 4 && xhr.status == 200){
+                        this.innerHTML = xhr.response;
+                    } 
+                }
+                xhr.open('POST', `http://localhost:3000/add`, true)
+                xhr.setRequestHeader("Content-Type", "application/json"); 
+                xhr.send(JSON.stringify(
+                    {
+                        'addition_name': document.getElementById('name').value
+                    } 
+                ))
+            })
+
+        </script>
+    </body>
+</html>
